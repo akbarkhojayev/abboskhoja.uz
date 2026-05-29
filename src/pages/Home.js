@@ -18,7 +18,10 @@ function Home() {
   const [softSkills, setSoftSkills] = useState([]);
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    const isMobile = window.innerWidth < 900;
+    if (!isMobile) {
+      document.body.style.overflow = 'hidden';
+    }
     return () => { document.body.style.overflow = ''; };
   }, []);
 
@@ -92,14 +95,15 @@ function Home() {
   return (
     <Box
       sx={{
-        height: { xs: 'calc(100vh - 56px)', sm: 'calc(100vh - 64px)' },
+        minHeight: { xs: 'auto', md: 'calc(100vh - 64px)' },
+        height: { xs: 'auto', md: 'calc(100vh - 64px)' },
         background: theme.palette.background.default,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        py: { xs: 3, sm: 4, md: 6 },
+        py: { xs: 3, sm: 4, md: 0 },
         px: { xs: 2, sm: 3 },
-        overflow: 'hidden',
+        overflow: { xs: 'visible', md: 'hidden' },
       }}
     >
       <Container maxWidth="lg" sx={{ zIndex: 1, px: { xs: 2, sm: 3 } }}>
@@ -121,7 +125,7 @@ function Home() {
             alignItems: 'center',
             gap: { xs: 3, sm: 4, lg: 8 },
             justifyContent: 'center',
-            mt: { xs: 2, sm: 4, lg: 6 },
+            mt: 0,
           }}
         >
           {/* Avatar and links */}

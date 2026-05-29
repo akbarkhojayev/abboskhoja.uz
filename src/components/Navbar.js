@@ -15,6 +15,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 
 const API_BASE = 'https://abboskhojauz.pythonanywhere.com';
@@ -167,51 +168,80 @@ function Navbar() {
         </Box>
       </Toolbar>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Bottom Sheet */}
       <Drawer
-        anchor="right"
+        anchor="bottom"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         sx={{
           '& .MuiDrawer-paper': {
-            width: 260,
-            background: theme.palette.background.paper,
-            borderLeft: `1px solid ${isDark ? '#333' : '#e0e0e0'}`,
+            borderRadius: '20px 20px 0 0',
+            background: isDark ? '#1a1d25' : '#fff',
+            boxShadow: '0 -8px 40px rgba(0,0,0,0.18)',
+            px: 2,
+            pb: 3,
+            pt: 1.5,
           },
         }}
       >
-        <Box sx={{ pt: 3, px: 2 }} role="presentation">
-          <Typography variant="h6" sx={{ mb: 3, color: textColor, fontWeight: 600, textAlign: 'center', pb: 2 }}>
-            Menu
+        {/* Handle bar */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1.5 }}>
+          <Box sx={{ width: 36, height: 4, borderRadius: 99, background: isDark ? '#444' : '#ddd' }} />
+        </Box>
+
+        {/* Header */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, px: 1 }}>
+          <Typography sx={{ fontWeight: 700, fontSize: '0.95rem', color: textColor, letterSpacing: '-0.2px' }}>
+            Abboskhoja's Blog
           </Typography>
-          <List>
-            {PAGES.map(page => (
-              <ListItem key={page.name} disablePadding sx={{ mb: 1 }}>
-                <ListItemButton
-                  onClick={() => { setDrawerOpen(false); navigate(page.path); }}
-                  sx={{
-                    borderRadius: 2,
-                    color: location.pathname === page.path
-                      ? theme.palette.primary.main
-                      : theme.palette.text.primary,
-                    fontWeight: location.pathname === page.path ? 600 : 400,
-                    background: location.pathname === page.path
-                      ? (isDark ? '#333' : '#f5f5f5')
-                      : 'transparent',
-                    '&:hover': {
-                      background: isDark ? '#333' : '#f5f5f5',
-                      color: theme.palette.primary.main,
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary={page.name}
-                    sx={{ '& .MuiListItemText-primary': { fontSize: '1rem' } }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+          <IconButton
+            size="small"
+            onClick={() => setDrawerOpen(false)}
+            sx={{ color: theme.palette.text.secondary, p: 0.5 }}
+          >
+            <CloseIcon sx={{ fontSize: 18 }} />
+          </IconButton>
+        </Box>
+
+        {/* Links */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+          {PAGES.map(page => {
+            const active = location.pathname === page.path;
+            return (
+              <Box
+                key={page.name}
+                onClick={() => { setDrawerOpen(false); navigate(page.path); }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.5,
+                  px: 2,
+                  py: 1.2,
+                  borderRadius: 2.5,
+                  cursor: 'pointer',
+                  background: active
+                    ? (isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)')
+                    : 'transparent',
+                  transition: 'background 0.15s',
+                  '&:active': { background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)' },
+                }}
+              >
+                <Box sx={{
+                  width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+                  background: active ? theme.palette.primary.main : 'transparent',
+                  border: `1.5px solid ${active ? theme.palette.primary.main : (isDark ? '#555' : '#ccc')}`,
+                  transition: 'all 0.15s',
+                }} />
+                <Typography sx={{
+                  fontSize: '0.97rem',
+                  fontWeight: active ? 600 : 400,
+                  color: active ? textColor : theme.palette.text.secondary,
+                }}>
+                  {page.name}
+                </Typography>
+              </Box>
+            );
+          })}
         </Box>
       </Drawer>
     </AppBar>
