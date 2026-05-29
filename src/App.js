@@ -12,6 +12,7 @@ import ThemeModeProvider from './ThemeContext';
 import ProjectDetail from './pages/ProjectDetail';
 import Algorithms from './pages/Algorithms';
 import AlgorithmDetail from './pages/AlgorithmDetail';
+import NotFound from './pages/NotFound';
 
 function AppContent() {
   const theme = useTheme();
@@ -57,6 +58,7 @@ function AppContent() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin-projects/:id/" element={<ProjectDetail />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Box>
       <Box sx={{
